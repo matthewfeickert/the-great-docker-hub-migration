@@ -57,7 +57,7 @@ jobs:
       if: github.event_name != 'pull_request'
       uses: docker/login-action@v2
       with:
-        registry: hub.opensciencegrid.org
+        registry: registry.cern.ch
         username: ${{ secrets.CERN_HARBOR_USERNAME }}
         password: ${{ secrets.CERN_HARBOR_TOKEN }}
 
