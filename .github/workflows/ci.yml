@@ -17,7 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.10']
+        image-name: ["pyhf/pyhf"]
+        image-tag: ["latest", "v0.3.1"]
+        new-image-registry: ["hub.opensciencegrid.org"]
 
     steps:
 
@@ -38,5 +40,14 @@ jobs:
 
     - name: Pull images
       run: |
-        docker pull pyhf/pyhf:latest
-        docker images
+        docker pull ${{ matrix.image-name }}:${{ matrix.image-tag }}
+        docker images ${{ matrix.image-name }}
+
+    - name: Tag images
+      run: |
+        docker tag ${{ matrix.image-name }}:${{ matrix.image-tag }} ${{ matrix.new-image-registry}}/${{ matrix.image-name }}:${{ matrix.image-tag }}
+        docker images ${{ matrix.new-image-registry}}/${{ matrix.image-name }}
+
+    - name: Push images
+      run: |
+        docker push ${{ matrix.new-image-registry}}/${{ matrix.image-name }}
