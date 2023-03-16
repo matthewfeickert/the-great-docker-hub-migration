@@ -18,8 +18,13 @@ jobs:
     strategy:
       matrix:
         image-name: ["pyhf/pyhf"]
-        image-tag: ["latest", "v0.3.2", "v0.3.3", "v0.3.4", "v0.4.0", "v0.4.1", "v0.4.3", "v0.4.4", "v0.5.0", "v0.5.1", "v0.5.2", "v0.5.3", "v0.5.4", "v0.6.0", "v0.6.1", "v0.6.2", "v0.6.3"]
-        new-image-registry: ["hub.opensciencegrid.org"]
+        # image-tag: ["latest", "latest-stable", "v0.3.2", "v0.3.3", "v0.3.4", "v0.4.0", "v0.4.1", "v0.4.3", "v0.4.4", "v0.5.0", "v0.5.1", "v0.5.2", "v0.5.3", "v0.5.4", "v0.6.0", "v0.6.1", "v0.6.2", "v0.6.3"]
+        # image-tag: ["v0.3.2", "v0.3.3", "v0.3.4", "v0.4.0", "v0.4.1", "v0.4.3", "v0.4.4", "v0.5.0", "v0.5.1", "v0.5.2", "v0.5.3", "v0.5.4", "v0.6.0", "v0.6.1"]
+        image-tag: ["v0.3.2"]
+        # new-image-registry: ["hub.opensciencegrid.org"]
+        # new-image-name: ["pyhf/pyhf"]
+        new-image-registry: ["ghcr.io"]
+        new-image-name: ["scikit-hep/pyhf"]
 
     steps:
 
@@ -29,6 +34,14 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Login to GitHub Container Registry
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Login to OSG Harbor Container Registry
       if: github.event_name != 'pull_request'
@@ -45,9 +58,9 @@ jobs:
 
     - name: Tag image
       run: |
-        docker tag ${{ matrix.image-name }}:${{ matrix.image-tag }} ${{ matrix.new-image-registry}}/${{ matrix.image-name }}:${{ matrix.image-tag }}
-        docker images ${{ matrix.new-image-registry}}/${{ matrix.image-name }}
+        docker tag ${{ matrix.image-name }}:${{ matrix.image-tag }} ${{ matrix.new-image-registry}}/${{ matrix.new-image-name }}:${{ matrix.image-tag }}
+        docker images ${{ matrix.new-image-registry}}/${{ matrix.new-image-name }}
 
     - name: Push image to registry
       run: |
-        docker push ${{ matrix.new-image-registry}}/${{ matrix.image-name }}:${{ matrix.image-tag }}
+        docker push ${{ matrix.new-image-registry}}/${{ matrix.new-image-name }}:${{ matrix.image-tag }}
