@@ -38,16 +38,16 @@ jobs:
         username: ${{ secrets.OSG_HARBOR_USERNAME }}
         password: ${{ secrets.OSG_HARBOR_TOKEN }}
 
-    - name: Pull images
+    - name: Pull image
       run: |
         docker pull ${{ matrix.image-name }}:${{ matrix.image-tag }}
         docker images ${{ matrix.image-name }}
 
-    - name: Tag images
+    - name: Tag image
       run: |
         docker tag ${{ matrix.image-name }}:${{ matrix.image-tag }} ${{ matrix.new-image-registry}}/${{ matrix.image-name }}:${{ matrix.image-tag }}
         docker images ${{ matrix.new-image-registry}}/${{ matrix.image-name }}
 
-    - name: Push images
+    - name: Push image to registry
       run: |
-        docker push ${{ matrix.new-image-registry}}/${{ matrix.image-name }}
+        docker push ${{ matrix.new-image-registry}}/${{ matrix.image-name }}:${{ matrix.image-tag }}
