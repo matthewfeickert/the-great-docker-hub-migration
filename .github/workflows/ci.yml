@@ -2,8 +2,8 @@ name: replicate with crane
 
 on:
   push:
-    branches:
-    - main
+    # branches:
+    # - main
   pull_request:
     branches:
     - main
@@ -86,8 +86,8 @@ jobs:
           "0.3.4",
           "0.3.5",
           ]
-        new-image-registry: ["registry.cern.ch"]
-        new-image-name: ["madminer/madminer-jupyter-env"]
+        new-image-registry: ["ghcr.io"]
+        new-image-name: ["madminer-tool/madminer-jupyter-env"]
 
     steps:
 
