@@ -76,20 +76,23 @@ jobs:
         # new-image-registry: ["registry.cern.ch"]
         # new-image-name: ["recast/recastatlas"]
 
-        image-name: ["madminertool/madminer-workflow-ph"]
+        image-name: ["madminertool/madminer-workflow-ml"]
         image-tag: [
           "0.1.0",
           "0.2.0",
+          "0.2.1",
+          "0.2.2",
+          "0.2.3",
           "0.3.0",
           "0.3.1",
           "0.4.0",
-          "0.5.0",
-          "0.5.1",
-          "0.5.2",
-          "0.5.4",
+          "0.4.1",
+          "0.4.2",
+          "scalability_adam",
+          "scalability_adam_split_train",
           ]
         new-image-registry: ["registry.cern.ch"]
-        new-image-name: ["madminer/madminer-workflow-ph"]
+        new-image-name: ["madminer/madminer-workflow-ml"]
 
     steps:
 
